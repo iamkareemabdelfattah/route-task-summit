@@ -1,7 +1,6 @@
 import React from 'react'
-import Customers from '../Customers/Customers';
-import Transactions from '../Transactions/Transactions';
 import Chart from '../Chart/Chart';
+import GetData from './../GetData/GetData';
 
 const Home = () =>
 {  
@@ -12,10 +11,7 @@ const Home = () =>
       </p>
       
       <div className=' w-75 rounded border shadow p-4 m-auto'>
-        <Customers />
-      </div>
-      <div className=' w-75 rounded border shadow p-4 m-auto my-3'>
-        <Transactions />
+        <GetData />
       </div>
       <div className=' w-75 rounded border shadow p-4 m-auto my-3'>
         <Chart/>
