@@ -10,7 +10,7 @@ const GetData = () =>
   async function getData ( sales, callback )
   {
     let { data } = await axios.get( `http://localhost:4000/${ sales }` );
-    console.log( data );
+    console.log( 'parent',data );
     callback( data );
     setFiltering( data )
   }
@@ -19,27 +19,28 @@ const GetData = () =>
   {
     getData( 'customers', setCustomers );
     getData( 'transactions', setTransaction );
-
   }, [] );
 
-  function handleFiltering (e )
+  const handleFiltering = ( e ) =>
   {
     setFiltering(
-      transactions.filter( ( item ) => item.amount.toString().includes( e.target.value ) )
+      filtering.filter( ( item ) => item.amount.toString().includes( e.target.value ) )
     );
-    // setFiltering(
-    //     customers.filter(( customer ) => customer.name.toLowerCase().includes( e.target.value.toLowerCase() ))
-    //     );
+    setFiltering(
+      customers.filter( ( customer ) => customer.name.toLowerCase().includes( e.target.value.toLowerCase() ) )
+    );
+    console.log( e.taget.value );
   }
 
   return (
     <div className='container'>
 
-      <input type="text" className='form-control' onChange={ handleFiltering } placeholder='Search by Amount ' />
+      <input type="text" className='form-control' onChange={handleFiltering} placeholder='Search by Amount ' />
 
       <table className="table table-striped table-responsive">
         <thead>
           <tr>
+            <th scope="col">ID</th>
             <th scope="col">Customer ID</th>
             <th scope="col">Name</th>
             <th scope="col">Date</th>
@@ -47,20 +48,26 @@ const GetData = () =>
           </tr>
         </thead>
         <tbody>
-          { filtering&&filtering.map( ( item, index ) =>
           {
-            return (
-              <tr key={ index }>
+            filtering&&transactions.map( ( item ) => (
+              <tr key={ item.id }>
+                <td>{ item.id }</td>
                 <td>{ item.customer_id }</td>
                 <td>
-                  { customers.find( ( customer ) => customer.id === item.customer_id ).name }
+                  {
+                      customers.map(
+                        ( customers ) => (
+                          customers.id === item.customer_id && customers.name
+                        )
+                      )
+                  }
                 </td>
                 <td>{ item.date }</td>
                 <td>{ item.amount }</td>
               </tr>
-            );
+            )
+            )
           }
-          ) }
         </tbody>
       </table>
     </div>

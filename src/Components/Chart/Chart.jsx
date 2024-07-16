@@ -21,16 +21,56 @@ ChartJS.register(
 
 const Chart = () =>
 {
-  let [ chartData, setChartData ] = useState( {} );
+  let [ chartDataCust, setChartDataCust ] = useState( {} );
+  let [ chartDataTran, setChartDataTran ] = useState( {} );
 
-  async function getData ()
+  async function getInfoCustomers ()
+  {
+
+    let { data } = await axios.get(
+      `http://localhost:4000/customers`
+    );
+
+    setChartDataCust( {
+      labels: data.map( ( item ) => item.name ),
+      datasets: [
+        {
+          label: 'Income Total Transaction Amount Per Day',
+          data: data.map( ( item ) => item.name ),
+          backgroundColor: '#F24D66',
+          borderColor: '#00FFFF',
+          borderWidth: 3
+        }
+      ]
+    } );
+
+    console.log( data.map( ( item ) =>
+    {
+      return (
+        {
+          name: item.name,
+        }
+      );
+    }
+    ) );
+    console.log( {
+      labels: data.map( ( item ) => item.id ),
+      datasets: [
+        {
+          label: 'Customer',
+          data: data.map( ( item ) => item.name ),
+        }
+      ]
+    } );
+  }
+  async function getInfoTransaction ()
   {
 
     let { data } = await axios.get(
       `http://localhost:4000/transactions`
     );
 
-    setChartData( {
+    setChartDataTran( {
       labels: data.map( ( item ) => item.date ),
       datasets: [
         {
@@ -67,7 +107,8 @@ const Chart = () =>
   useEffect(
     () =>
     {
-      getData();
+      getInfoCustomers();
+      getInfoTransaction();
     }, [] );
 
   // useEffect( () =>
@@ -118,15 +159,34 @@ const Chart = () =>
   // }
   //   , [] );
 
-  console.log( chartData );
+  console.log( 'Cust',chartDataCust,"Trans" ,chartDataTran);
 
   return (
-    <div className="chart-container m-auto" style={{ position: 'relative', height: '400px', width: '600px',
-}}>
+    <div className="chart-container m-auto" style={ {
+      position: 'relative', height: '400px', width: '600px',
+    } }>
       {
-        chartData && chartData.datasets && (
+        chartDataCust && chartDataTran ?
           <Bar
-            data={ chartData }
+            data={ {
+              labels: chartDataCust.labels,
+              datasets: [
+                {
+                  label: 'Customer',
+                  data: chartDataCust.datasets[ 0 ].data,
+                  backgroundColor: '#ff0000',
+                  borderColor: '#ff0000',
+                  borderWidth: 3
+                },
+                {
+                  label: 'Transaction',
+                  data: chartDataTran.datasets[ 0 ].data,
+                  backgroundColor: '#00ff00',
+                  borderColor: '#00ff00',
+                  borderWidth: 3
+                },
+              ]
+            } }
             options={ {
               responsive: true,
               plugins: {
@@ -138,9 +198,8 @@ const Chart = () =>
                   text: 'Customers Transaction Amount'
                 },
               }
-            }}
-          />
-        )
+            } }
+          /> : null
       }
     </div>
   )
