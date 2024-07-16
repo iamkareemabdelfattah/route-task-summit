@@ -13,7 +13,7 @@ const Home = () =>
       <div className=' w-75 rounded border shadow p-4 m-auto'>
         <GetData />
       </div>
-      <div className=' w-75 rounded border shadow p-4 m-auto my-3'>
+      <div className='rounded border shadow  my-3'>
         <Chart/>
       </div>
     </div>

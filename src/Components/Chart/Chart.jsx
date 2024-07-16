@@ -24,11 +24,18 @@ const Chart = () =>
   let [ chartDataCust, setChartDataCust ] = useState( {} );
   let [ chartDataTrans, setChartDataTrans ] = useState( {} );
 
-  async function GetDataCustomers()
+  async function GetDataCustomers ()
   {
     let { data } = await axios.get(
       `http://localhost:4000/customers`
     );
+    // let labels = [];
+    // let dataCust = [];
+    // data.forEach( ( item ) =>
+    // { 
+    //   labels.push( item.name );
+    //   dataCust.push( item.id );
+    // } );
     setChartDataCust(
       {
         labels: data.map( ( item ) => item.name ),
@@ -38,8 +45,7 @@ const Chart = () =>
             data:
             {
               id: data.map( ( item ) => item.id ),
-              name: data.map( ( item ) => item.name ),
-              },
+            },
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
               'rgba(54, 162, 235, 0.2)',
@@ -57,10 +63,10 @@ const Chart = () =>
             borderWidth: 1,
           },
         ],
-      } )
+      } );
   }
 
-  async function GetDataTransaction()
+  async function GetDataTransaction ()
   {
     let { data } = await axios.get(
       `http://localhost:4000/transactions`
@@ -77,7 +83,7 @@ const Chart = () =>
             'rgba(255, 206, 86, 0.2)',
             'rgba(75, 192, 192, 0.2)',
             'rgba(153, 102, 255, 0.2)',
-            ],
+          ],
           borderColor: [
             'rgba(255, 99, 132, 1)',
             'rgba(54, 162, 235, 1)',
@@ -87,7 +93,7 @@ const Chart = () =>
           ],
           borderWidth: 1,
         },
-      })
+      } );
   }
 
   useEffect(
@@ -97,14 +103,14 @@ const Chart = () =>
       GetDataTransaction();
     }, [] );
 
-  console.log( chartDataCust,chartDataTrans );
+  console.log( chartDataCust, chartDataTrans );
 
   return (
-    <div className="chart-container m-auto" style={ {
+    <div className="chart chart-container m-auto" style={ {
       position: 'relative', height: '400px', width: '600px',
     } }>
       {
-        chartDataCust.datasets && chartDataTrans.datasets && (
+        chartDataTrans.datasets && chartDataCust.datasets && (
           <Bar
             data={ {
               labels: chartDataCust.labels,
@@ -146,10 +152,11 @@ const Chart = () =>
                     'rgba(153, 102, 255, 1)',
                   ],
                   borderWidth: 1,
-                  },
+                },
               ],
             } }
           />
+
         )
       }
     </div>
