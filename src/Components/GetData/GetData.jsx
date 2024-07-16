@@ -23,13 +23,12 @@ const GetData = () =>
 
   const handleFiltering = ( e ) =>
   {
-    setFiltering(
-      filtering.filter( ( item ) => item.amount.toString().includes( e.target.value ) )
-    );
-    setFiltering(
-      customers.filter( ( customer ) => customer.name.toLowerCase().includes( e.target.value.toLowerCase() ) )
-    );
-    console.log( e.taget.value );
+    let { value } = e.target;
+    let filtered = filtering.filter( ( item ) =>
+    {
+      return item.amount.toString().includes( value.toString() );
+    } );
+    setCustomers( filtered );
   }
 
   return (

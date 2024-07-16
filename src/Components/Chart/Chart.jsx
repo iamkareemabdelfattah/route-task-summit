@@ -1,15 +1,15 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 
 import
-  {
-    Chart as ChartJS, BarElement,
-  CategoryScale,LinearScale,
-  Tooltip,Legend
- } from 'chart.js';
+{
+  Chart as ChartJS, BarElement,
+  CategoryScale, LinearScale,
+  Tooltip, Legend
+} from 'chart.js';
 
 import
-  {Bar} from 'react-chartjs-2';
+{ Bar } from 'react-chartjs-2';
 
 ChartJS.register(
   BarElement,
@@ -17,192 +17,147 @@ ChartJS.register(
   LinearScale,
   Tooltip,
   Legend,
-)
+);
 
 const Chart = () =>
 {
   let [ chartDataCust, setChartDataCust ] = useState( {} );
-  let [ chartDataTran, setChartDataTran ] = useState( {} );
+  let [ chartDataTrans, setChartDataTrans ] = useState( {} );
 
-  async function getInfoCustomers ()
+  async function GetDataCustomers()
   {
-
     let { data } = await axios.get(
       `http://localhost:4000/customers`
     );
-
-    setChartDataCust( {
-      labels: data.map( ( item ) => item.name ),
-      datasets: [
-        {
-          label: 'Income Total Transaction Amount Per Day',
-          data: data.map( ( item ) => item.name ),
-          backgroundColor: '#F24D66',
-          borderColor: '#00FFFF',
-          borderWidth: 3
-        }
-      ]
-    } );
-
-    console.log( data.map( ( item ) =>
-    {
-      return (
-        {
-          name: item.name,
-        }
-      );
-    }
-    ) );
-    console.log( {
-      labels: data.map( ( item ) => item.id ),
-      datasets: [
-        {
-          label: 'Customer',
-          data: data.map( ( item ) => item.name ),
-        }
-      ]
-    } );
+    setChartDataCust(
+      {
+        labels: data.map( ( item ) => item.name ),
+        datasets: [
+          {
+            label: 'Customers',
+            data:
+            {
+              id: data.map( ( item ) => item.id ),
+              name: data.map( ( item ) => item.name ),
+              },
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+            ],
+            borderColor: [
+              'rgba(255, 99, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+            ],
+            borderWidth: 1,
+          },
+        ],
+      } )
   }
-  async function getInfoTransaction ()
-  {
 
+  async function GetDataTransaction()
+  {
     let { data } = await axios.get(
       `http://localhost:4000/transactions`
     );
-
-    setChartDataTran( {
-      labels: data.map( ( item ) => item.date ),
-      datasets: [
-        {
-          label: 'Income Total Transaction Amount Per Day',
-          data: data.map( ( item ) => item.amount ),
-          backgroundColor: '#F24D66',
-          borderColor: '#00FFFF',
-          borderWidth: 3
-        }
-      ]
-    } );
-
-    console.log( data.map( ( item ) =>
-    {
-      return (
-        {
-          date: item.date,
-          amount: item.amount
-        }
-      );
-    }
-    ) );
-    console.log( {
-      labels: data.map( ( item ) => item.date ),
-      datasets: [
-        {
-          label: 'Income',
-          data: data.map( ( item ) => item.amount ),
-        }
-      ]
-    } );
+    setChartDataTrans(
+      {
+        labels: data.map( ( item ) => item.customer_id ),
+        datasets: {
+          label: 'Transactions',
+          data: {
+            customer_id: data.map( ( item ) => item.customer_id ),
+            date: data.map( ( item ) => item.date ),
+            amount: data.map( ( item ) => item.amount ),
+          },
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+          ],
+          borderWidth: 1,
+        },
+      })
   }
 
   useEffect(
     () =>
     {
-      getInfoCustomers();
-      getInfoTransaction();
+      GetDataCustomers();
+      GetDataTransaction();
     }, [] );
 
-  // useEffect( () =>
-  // {
-  //   let fetchData = async () =>
-  //   {
-  //     let { data } = await axios.get(
-  //       `http://localhost:4000/transactions`
-  //     );
-  //     setChartData(
-  //       {
-  //         labels: data.map( ( item ) => item.date ),
-  //         datasets: [
-  //           {
-  //             label: 'Income',
-  //             data: data.map( ( item ) => item.amount ),
-  //             backgroundColor: '#ff0000',
-  //             borderColor: '#ff0000',
-  //             borderWidth: 3
-  //           }
-  //         ]
-  //       }
-  //     );
-  //     console.log( data.map( ( item ) =>
-  //     {
-  //       return (
-  //         {
-  //           date: item.date,
-  //           amount: item.amount
-  //         }
-  //       );
-  //     }
-  //     ) );
-  //     console.log( {
-  //       labels: data.map( ( item ) => item.date ),
-  //       datasets: [
-  //         {
-  //           label: 'Income',
-  //           data: data.map( ( item ) => item.amount ),
-  //           backgroundColor: '#ff0000',
-  //           borderColor: '#ff0000',
-  //           borderWidth: 3
-  //         },
-  //       ]
-  //     } );
-  //   };
-  //   fetchData();
-  // }
-  //   , [] );
-
-  console.log( 'Cust',chartDataCust,"Trans" ,chartDataTran);
+  console.log( chartDataCust,chartDataTrans );
 
   return (
     <div className="chart-container m-auto" style={ {
       position: 'relative', height: '400px', width: '600px',
     } }>
       {
-        chartDataCust && chartDataTran ?
+        chartDataCust.datasets && chartDataTrans.datasets && (
           <Bar
             data={ {
               labels: chartDataCust.labels,
               datasets: [
                 {
-                  label: 'Customer',
-                  data: chartDataCust.datasets[ 0 ].data,
-                  backgroundColor: '#ff0000',
-                  borderColor: '#ff0000',
-                  borderWidth: 3
+                  label: 'Customers',
+                  data: chartDataCust.datasets.data,
+                  backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                  ],
+                  borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                  ],
+                  borderWidth: 1,
                 },
                 {
-                  label: 'Transaction',
-                  data: chartDataTran.datasets[ 0 ].data,
-                  backgroundColor: '#00ff00',
-                  borderColor: '#00ff00',
-                  borderWidth: 3
-                },
-              ]
+                  label: 'Transactions',
+                  data: chartDataTrans.datasets.data,
+                  backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                  ],
+                  borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                  ],
+                  borderWidth: 1,
+                  },
+              ],
             } }
-            options={ {
-              responsive: true,
-              plugins: {
-                legend: {
-                  position: 'bottom',
-                },
-                title: {
-                  display: true,
-                  text: 'Customers Transaction Amount'
-                },
-              }
-            } }
-          /> : null
+          />
+        )
       }
     </div>
-  )
-}
+  );
+};
 
-export default Chart
+export default Chart;
