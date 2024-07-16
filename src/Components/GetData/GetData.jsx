@@ -3,14 +3,15 @@ import React, { useState, useEffect } from 'react';
 
 const GetData = () =>
 {
-  // const [ customers, setCustomers ] = useState( [] );
-  // const [ transactions, setTransaction ] = useState( [] );
+  const [ customers, setCustomers ] = useState( [] );
+  const [ transactions, setTransaction ] = useState( [] );
   let [ filtering, setFiltering ] = useState( [] );
 
-  async function getData ( )
+  async function getData ( sales, callback )
   {
-    let { data } = await axios.get( `https://iamkareemabdelfattah.github.io/jsonerver/db.json` );
+    let { data } = await axios.get( `http://localhost:4000/${ sales }` );
     console.log( 'parent', data );
+    callback( data );
     setFiltering( data );
   }
 
