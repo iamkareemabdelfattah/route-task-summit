@@ -28,7 +28,7 @@ const GetData = () =>
     {
       return item.amount.toString().includes( value.toString() );
     } );
-    setCustomers( filtered );
+    setFiltering( filtered );
   }
 
   return (

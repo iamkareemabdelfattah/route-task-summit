@@ -70,11 +70,7 @@ const Chart = () =>
         labels: data.map( ( item ) => item.customer_id ),
         datasets: {
           label: 'Transactions',
-          data: {
-            customer_id: data.map( ( item ) => item.customer_id ),
-            date: data.map( ( item ) => item.date ),
-            amount: data.map( ( item ) => item.amount ),
-          },
+          data: data.map( ( item ) => item.amount ),
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
             'rgba(54, 162, 235, 0.2)',
