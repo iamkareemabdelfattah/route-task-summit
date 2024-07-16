@@ -106,11 +106,11 @@ const Chart = () =>
   console.log( chartDataCust, chartDataTrans );
 
   return (
-    <div className="chart chart-container m-auto" style={ {
+    <div className="chart-container m-auto" style={ {
       position: 'relative', height: '400px', width: '600px',
     } }>
       {
-        chartDataTrans.datasets && chartDataCust.datasets && (
+        chartDataCust.datasets && chartDataTrans.datasets && (
           <Bar
             data={ {
               labels: chartDataCust.labels,
@@ -156,7 +156,6 @@ const Chart = () =>
               ],
             } }
           />
-
         )
       }
     </div>
