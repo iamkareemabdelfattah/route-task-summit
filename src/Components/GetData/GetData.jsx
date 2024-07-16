@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 
 const GetData = () =>
 {
@@ -10,9 +10,9 @@ const GetData = () =>
   async function getData ( sales, callback )
   {
     let { data } = await axios.get( `http://localhost:4000/${ sales }` );
-    console.log( 'parent',data );
+    console.log( 'parent', data );
     callback( data );
-    setFiltering( data )
+    setFiltering( data );
   }
 
   useEffect( () =>
@@ -23,18 +23,22 @@ const GetData = () =>
 
   const handleFiltering = ( e ) =>
   {
-    let { value } = e.target;
-    let filtered = filtering.filter( ( item ) =>
-    {
-      return item.amount.toString().includes( value.toString() );
-    } );
-    setFiltering( filtered );
-  }
+    setTransaction(
+      filtering.filter( ( item ) =>
+      {
+        return item.amount.toString().includes( e.target.value.toString() );
+      } )
+    );
+    setCustomers(
+      customers.filter( ( item ) =>item.name.toLowerCase().includes( e.target.value.toLowerCase() )
+      )
+    );
+  };
 
   return (
     <div className='container'>
 
-      <input type="text" className='form-control' onChange={handleFiltering} placeholder='Search by Amount ' />
+      <input type="text" className='form-control' onChange={ handleFiltering } placeholder='Search by Name Or Amount ' />
 
       <table className="table table-striped table-responsive">
         <thead>
@@ -48,17 +52,17 @@ const GetData = () =>
         </thead>
         <tbody>
           {
-            filtering&&transactions.map( ( item ) => (
+            filtering && transactions.map( ( item ) => (
               <tr key={ item.id }>
                 <td>{ item.id }</td>
                 <td>{ item.customer_id }</td>
                 <td>
                   {
-                      customers.map(
-                        ( customers ) => (
-                          customers.id === item.customer_id && customers.name
-                        )
+                    customers.map(
+                      ( customers ) => (
+                        customers.id === item.customer_id && customers.name
                       )
+                    )
                   }
                 </td>
                 <td>{ item.date }</td>
@@ -70,7 +74,7 @@ const GetData = () =>
         </tbody>
       </table>
     </div>
-  )
-}
+  );
+};
 
 export default GetData;
