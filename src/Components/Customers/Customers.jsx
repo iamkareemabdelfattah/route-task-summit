@@ -9,23 +9,23 @@ const Customers = () =>
   async function getData ()
   {
     let { data } = await axios.get(
-      `http://localhost:4000/customers`
+      `https://iamkareemabdelfattah.github.io/jsonerver/db.json`
     );
-    console.log( data );
-    setData( data );
-    setFiltering(data)
+    console.log( data.customers );
+    setData( data.customers );
+    setFiltering( data.customers )
   }
 
   useEffect(
     () =>
     {
-      getData(data)
+      getData()
     }, [] );
   
   function handleFiltering ( e )
   {
     setFiltering(
-      data.filter(( customer ) => customer.name.toLowerCase().includes( e.target.value.toLowerCase() ))
+      data.customers.filter(( customer ) => customer.name.toLowerCase().includes( e.target.value.toLowerCase() ))
     );
     console.log(e.taget.value)
   }
@@ -41,16 +41,7 @@ const Customers = () =>
                   Id
                 </th>
                 <th>
-                  Customers Id
-                </th>
-                <th>
                   Name
-                </th>
-                <th>
-                  Date
-                </th>
-                <th>
-                  Amount
                 </th>
               </tr>
             </thead>
@@ -60,9 +51,6 @@ const Customers = () =>
                 return (
                   <tr key={ index }>
                     <td>{ item.id }</td>
-                    <td>{ item.name }</td>
-                    <td>{ item.name }</td>
-                    <td>{ item.name }</td>
                     <td>{ item.name }</td>
                   </tr>
                 );

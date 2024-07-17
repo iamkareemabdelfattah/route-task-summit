@@ -26,8 +26,8 @@ const Chart = () =>
 
   async function GetDataCustomers ()
   {
-    let { data } = await axios.get(
-      `http://localhost:4000/customers`
+    let { data} = await axios.get(
+      `https://iamkareemabdelfattah.github.io/jsonerver/db.json`
     );
     // let labels = [];
     // let dataCust = [];
@@ -38,13 +38,13 @@ const Chart = () =>
     // } );
     setChartDataCust(
       {
-        labels: data.map( ( item ) => item.name ),
+        labels: data.customers.map( ( item ) => item.name ),
         datasets: [
           {
             label: 'Customers',
             data:
             {
-              id: data.map( ( item ) => item.id ),
+              id: data.customers.map( ( item ) => item.name ),
             },
             backgroundColor: [
               'rgba(255, 99, 132, 0.2)',
@@ -69,14 +69,14 @@ const Chart = () =>
   async function GetDataTransaction ()
   {
     let { data } = await axios.get(
-      `http://localhost:4000/transactions`
+      `https://iamkareemabdelfattah.github.io/jsonerver/db.json`
     );
     setChartDataTrans(
       {
-        labels: data.map( ( item ) => item.customer_id ),
+        labels: data.transactions.map( ( item ) => item.date ),
         datasets: {
           label: 'Transactions',
-          data: data.map( ( item ) => item.amount ),
+          data: data.transactions.map( ( item ) => item.amount ),
           backgroundColor: [
             'rgba(255, 99, 132, 0.2)',
             'rgba(54, 162, 235, 0.2)',

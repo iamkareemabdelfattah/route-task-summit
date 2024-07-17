@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 
-const Transactions = () =>
+const Customers = () =>
 {
   const [ data, setData ] = useState( [] );
   let [ filtering, setFiltering ] = useState( [] );
@@ -9,11 +9,11 @@ const Transactions = () =>
   async function getData ()
   {
     let { data } = await axios.get(
-      `http://localhost:4000/transactions`
+      `https://iamkareemabdelfattah.github.io/jsonerver/db.json`
     );
-    console.log( data );
-    setData( data );
-    setFiltering(data)
+    console.log( data.transactions );
+    setData( data.transactions );
+    setFiltering( data.transactions );
   }
 
   useEffect(
@@ -21,36 +21,42 @@ const Transactions = () =>
     {
       getData();
     }, [] );
-  
-  const handleFiltering = ( e ) =>
+
+  function handleFiltering ( e )
   {
     setFiltering(
-      data.filter( ( item ) => item.amount.toString().includes( e.target.value) )
+      data.transaction.filter( ( item ) => item.amount.toString().includes( e.target.value ))
     );
-   }
+    console.log( e.taget.value );
+  }
 
   return (
     <div>
-      <input type="text" className='form-control' onChange={ handleFiltering } placeholder='Search by Amount ' />
-      <table className="table table-striped table-responsive">
+
+      <input type="text" className='form-control' onChange={ handleFiltering } placeholder='Search By Name' />
+      <table className="table table-striped table-bordered table-hover">
         <thead>
           <tr>
-            <th scope="col">Customer ID</th>
-            <th scope="col">Date</th>
-            <th scope="col">Amount</th>
+            <th>
+              Id
+            </th>
+            <th>
+              Name
+            </th>
           </tr>
         </thead>
         <tbody>
           { filtering && filtering.map( ( item, index ) =>
-        {
-          return (
-            <tr key={ index }>
-              <td>{ item.customer_id }</td>
-              <td>{ item.date }</td>
-              <td>{ item.amount }</td>
-            </tr>
-          );
-        }
+          {
+            return (
+              <tr key={ index }>
+                <td>{ item.id }</td>
+                <td>{ item.customers_id }</td>
+                <td>{ item.date }</td>
+                <td>{ item.amount}</td>
+              </tr>
+            );
+          }
           ) }
         </tbody>
       </table>
@@ -58,4 +64,4 @@ const Transactions = () =>
   );
 };
 
-export default Transactions;
+export default Customers;
